@@ -1,2 +1,2 @@
 # dataMappingGuide
-tool for data mapping
+a tool that helps extract data from analog map
