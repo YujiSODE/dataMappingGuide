@@ -79,10 +79,12 @@ function dataMappingGuide(canvas,src){
 		return [cvs.color,cvs.alpha];
 	};
 	//### 3) focus area ###
-	//
+	//it puts focus on a area that is specified using integer coordinates
 	cvs.xy=function(x,y){
 		// - x: a positive integer index for horizontal division
 		// - y: a positive integer index for vertical division
+		x=!x?1:x;
+		y=!y?1:y;
 		x=+x<1?1:Math.floor(+x);
 		y=+y<1?1:Math.floor(+y);
 		cvs.X=x>cvs.Nx?cvs.Nx:x;
@@ -100,19 +102,24 @@ function dataMappingGuide(canvas,src){
 		ctx=null;
 		return [cvs.X,cvs.Y];
 	};
-	//it clears canvas element
+	//it clears canvas
 	cvs.clear=function(){
 		var ctx=canvas.getContext('2d');
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		ctx=null;
 		return [canvas.width,canvas.height];
 	};
-	//
-	cvs.next=function(){};
-	//
+	//it returns coordinates for the next focus area as form of [x,y]
+	cvs.next=function(){
+		var x2=cvs.X+1,y2=(x2<cvs.Nx+1)?cvs.Y:cvs.Y+1;
+		y2=(y2<cvs.Ny+1)?y2:1;
+		x2=(x2<cvs.Nx+1)?x2:1;
+		return [x2,y2];
+	};
+	//it returns the current state of sampling
 	cvs.info=function(){
 		return {
-			area:canvas.width+'x'+canvas.height+'pixels',
+			area:canvas.width+'x'+canvas.height+' pixels',
 			divisions:cvs.Nx+'x'+cvs.Ny
 		};
 	};
