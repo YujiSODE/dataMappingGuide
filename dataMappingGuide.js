@@ -17,6 +17,12 @@
 * - src: an optional filename or pathname of an image for background
 *=== Methods ===
 *
+*=== Focus area indices ===
+* an example of 3x3 divided focus area
+* _|1|2|3|
+* 1|x|x|x|
+* 2|x|x|x|
+* 3|x|x|x|
 */
 //============================================================================
 function dataMappingGuide(canvas,src){
@@ -36,8 +42,8 @@ function dataMappingGuide(canvas,src){
 		X:+1,
 		Y:+1,
 		/*rgb color and alpha value*/
-		color:'#f00',
-		alpha:+0.25
+		color:'#000',
+		alpha:+1.0
 	};
 	//default background image
 	cvs.img=!src?'none':src;
@@ -53,6 +59,8 @@ function dataMappingGuide(canvas,src){
 		canvas.style.backgroundRepeat='no-repeat';
 		canvas.style.backgroundImage=!src?'none':'url('+src+')';
 		//sizes and focus area sizes
+		w=!w?100:w;
+		h=!h?100:h;
 		canvas.width=+w;
 		canvas.height=+h;
 		cvs.dw=+w/cvs.Nx;
@@ -63,6 +71,8 @@ function dataMappingGuide(canvas,src){
 	cvs.setDivisions=function(x,y){
 		// - x: a number of horizontal division
 		// - y: a number of vertical division
+		x=!x?1:x;
+		y=!y?1:y;
 		cvs.Nx=+x<1?+1:Math.floor(+x);
 		cvs.Ny=+y<1?+1:Math.floor(+y);
 		cvs.dw=+canvas.width/cvs.Nx;
@@ -94,11 +104,23 @@ function dataMappingGuide(canvas,src){
 		ctx.clearRect(0,0,canvas.width,canvas.height);
 		ctx.globalAlpha=cvs.alpha;
 		ctx.fillStyle=cvs.color;
+		ctx.strokeStyle=cvs.color;
+		ctx.lineWidth=1.0;
 		//vertical area
 		ctx.fillRect((cvs.X-1)*cvs.dw,0,cvs.dw,canvas.height);
 		//horizontal area
 		ctx.fillRect(0,(cvs.Y-1)*cvs.dh,canvas.width,cvs.dh);
+		//focus area
 		ctx.clearRect((cvs.X-1)*cvs.dw,(cvs.Y-1)*cvs.dh,cvs.dw,cvs.dh);
+		ctx.beginPath();
+		//(X-1)*dx+dx/2=dx*(2*X-1)/2
+		//horizontal line
+		ctx.moveTo((cvs.X-1)*cvs.dw,cvs.dh*(2*cvs.Y-1)/2);
+		ctx.lineTo(cvs.X*cvs.dw,cvs.dh*(2*cvs.Y-1)/2);
+		//vertical line
+		ctx.moveTo(cvs.dw*(2*cvs.X-1)/2,(cvs.Y-1)*cvs.dh);
+		ctx.lineTo(cvs.dw*(2*cvs.X-1)/2,cvs.Y*cvs.dh);
+		ctx.stroke();
 		ctx=null;
 		return [cvs.X,cvs.Y];
 	};
