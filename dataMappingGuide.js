@@ -16,20 +16,20 @@
 * - `canvas`: a canvas element
 * - `src`: an optional filename or pathname of an image for background
 *=== Methods ===
-*### 1) resizing and background ###
+*### 1) Resizing and background ###
 *	- `resize(w,h,src)`; it sets canvas size and background image
 *	- `setDivisions(x,y)`; it sets horizontal and vertical divisions
 *		- `w` and `h`: new values for canvas width and canvas height
 *		- `src`: filename or pathname of an image; 'none' is default value
 *		- `x` and `y`: numbers for horizontal and vertical divisions
-*### 2) colors ###
+*### 2) Colors ###
 *	- `setColor(rgb,alpha)`; it sets rgb color and alpha value
 *		- `rgb`: rgb color value
 *		- `alpha`: an optional value between 0.0 (fully transparent) and 1.0 (fully opaque)
-*### 3) focus area ###
+*### 3) Focus area ###
 *	- `xy(x,y)`; it puts focus on a area that is specified using integer coordinates
 *		- `x` and `y`: positive integer indices for horizontal and vertical divisions
-*### other methods ###
+*### Other methods ###
 *	- `clear()`; it clears canvas
 *	- `next()`; it returns coordinates for the next focus area as form of [x,y]
 *	- `info()`; it returns the current state of sampling
@@ -65,7 +65,7 @@ function dataMappingGuide(canvas,src){
 	cvs.img=!src?'none':src;
 	canvas.style.backgroundRepeat='no-repeat';
 	canvas.style.backgroundImage=!src?'none':'url('+src+')';
-	//### 1) resizing and background ###
+	//### 1) Resizing and background ###
 	//it sets canvas size and background image
 	cvs.resize=function(w,h,src){
 		// - w and h: new values for canvas width and canvas height
@@ -94,7 +94,7 @@ function dataMappingGuide(canvas,src){
 		cvs.dh=+canvas.height/cvs.Ny;
 		return [cvs.Nx,cvs.Ny];
 	};
-	//### 2) colors ###
+	//### 2) Colors ###
 	//it sets rgb color and alpha value
 	cvs.setColor=function(rgb,alpha){
 		// - rgb: rgb color value
@@ -103,7 +103,7 @@ function dataMappingGuide(canvas,src){
 		cvs.alpha=!alpha?cvs.alpha:alpha;
 		return [cvs.color,cvs.alpha];
 	};
-	//### 3) focus area ###
+	//### 3) Focus area ###
 	//it puts focus on a area that is specified using integer coordinates
 	cvs.xy=function(x,y){
 		// - `x` and `y`: positive integer indices for horizontal and vertical divisions
@@ -138,7 +138,7 @@ function dataMappingGuide(canvas,src){
 		ctx=null;
 		return [cvs.X,cvs.Y];
 	};
-	//### other methods ###
+	//### Other methods ###
 	//it clears canvas
 	cvs.clear=function(){
 		var ctx=canvas.getContext('2d');
