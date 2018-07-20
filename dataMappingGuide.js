@@ -13,10 +13,26 @@
 * `var obj=dataMappingGuide(canvas,src);`
 * this function returns an object with some methods to control
 *=== Parameters ===
-* - canvas: a canvas element
-* - src: an optional filename or pathname of an image for background
+* - `canvas`: a canvas element
+* - `src`: an optional filename or pathname of an image for background
 *=== Methods ===
-*
+*### 1) resizing and background ###
+*	- `resize(w,h,src)`; it sets canvas size and background image
+*	- `setDivisions(x,y)`; it sets horizontal and vertical divisions
+*		- `w` and `h`: new values for canvas width and canvas height
+*		- `src`: filename or pathname of an image; 'none' is default value
+*		- `x` and `y`: numbers for horizontal and vertical divisions
+*### 2) colors ###
+*	- `setColor(rgb,alpha)`; it sets rgb color and alpha value
+*		- `rgb`: rgb color value
+*		- `alpha`: an optional value between 0.0 (fully transparent) and 1.0 (fully opaque)
+*### 3) focus area ###
+*	- `xy(x,y)`; it puts focus on a area that is specified using integer coordinates
+*		- `x` and `y`: positive integer indices for horizontal and vertical divisions
+*### other methods ###
+*	- `clear()`; it clears canvas
+*	- `next()`; it returns coordinates for the next focus area as form of [x,y]
+*	- `info()`; it returns the current state of sampling
 *=== Focus area indices ===
 * an example of 3x3 divided focus area
 * _|1|2|3|
@@ -26,8 +42,8 @@
 */
 //============================================================================
 function dataMappingGuide(canvas,src){
-	//- canvas: a canvas element
-	//- src: an optional filename or pathname of an image for background
+	// - canvas: a canvas element
+	// - src: an optional filename or pathname of an image for background
 	//cvs is object to return
 	var cvs={
 		/*background image*/
@@ -52,8 +68,8 @@ function dataMappingGuide(canvas,src){
 	//### 1) resizing and background ###
 	//it sets canvas size and background image
 	cvs.resize=function(w,h,src){
-		//- w and h: new value for canvas width and canvas height
-		//- src: filename or pathname of an image; 'none' is default value
+		// - w and h: new values for canvas width and canvas height
+		// - src: filename or pathname of an image; 'none' is default value
 		cvs.img=!src?'none':src;
 		//background image
 		canvas.style.backgroundRepeat='no-repeat';
@@ -69,8 +85,7 @@ function dataMappingGuide(canvas,src){
 	};
 	//it sets horizontal and vertical divisions
 	cvs.setDivisions=function(x,y){
-		// - x: a number of horizontal division
-		// - y: a number of vertical division
+		// - x and y: numbers for horizontal and vertical divisions
 		x=!x?1:x;
 		y=!y?1:y;
 		cvs.Nx=+x<1?+1:Math.floor(+x);
@@ -91,8 +106,7 @@ function dataMappingGuide(canvas,src){
 	//### 3) focus area ###
 	//it puts focus on a area that is specified using integer coordinates
 	cvs.xy=function(x,y){
-		// - x: a positive integer index for horizontal division
-		// - y: a positive integer index for vertical division
+		// - `x` and `y`: positive integer indices for horizontal and vertical divisions
 		x=!x?1:x;
 		y=!y?1:y;
 		x=+x<1?1:Math.floor(+x);
@@ -124,6 +138,7 @@ function dataMappingGuide(canvas,src){
 		ctx=null;
 		return [cvs.X,cvs.Y];
 	};
+	//### other methods ###
 	//it clears canvas
 	cvs.clear=function(){
 		var ctx=canvas.getContext('2d');
