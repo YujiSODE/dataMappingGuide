@@ -7,7 +7,7 @@
 *	See LICENSE or http://opensource.org/licenses/mit-license.php
 *===================================================================
 */
-//a tool that helps extract data from analog map
+//A tool that helps extract data from analog map
 /*
 *=== Synopsis ===
 * `var obj=dataMappingGuide(canvas,src);`
