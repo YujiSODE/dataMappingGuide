@@ -1,0 +1,174 @@
+<!--
+/*dataMappingGuide
+*dataMappingGuide_web.html
+*===================================================================
+*	Copyright (c) 2018 Yuji SODE <yuji.sode@gmail.com>
+*
+*	This software is released under the MIT License.
+*	See LICENSE or http://opensource.org/licenses/mit-license.php
+*===================================================================
+*/
+-->
+<!-- This program is web version of dataMappingGuide -->
+<!-- A tool that helps extract data from analog map. -->
+<!DOCTYPE html><html lang='en'>
+	<head>
+		<meta charset='utf-8'>
+		<meta name='description' content="A tool that helps extract data from analog map. This program is web version of dataMappingGuide.">
+		<title>dataMappingGuide_web</title>
+		<style type='text/css'>
+			canvas{
+				border:1px solid #000f;
+			}
+			#formDiv{
+				position:fixed;
+				right:0;
+				top:5vh;
+				width:45vw;
+				height:30vh;
+				resize:both;
+				background:#ddd;
+				overflow:scroll;
+			}
+			.divRight{
+				right:0;
+			}
+			.divLeft{
+				left:0;
+			}
+		</style>
+		<script type='text/javascript' src='./dataMappingGuide.js'></script>
+	</head>
+	<body>
+		<div>
+			<h1>dataMappingGuide</h1>
+			<p>A tool that helps extract data from analog map.
+				<br>This is web version of<a href='https://github.com/YujiSODE/dataMappingGuide'>dataMappingGuide</a>.</p>
+		</div>
+		<canvas id='cvs_dataMappingGuide' width=100 height=100></canvas>
+		<div id='formDiv' className='divRight'>
+			<form id='control'>
+				<!-- sizes, background and divisions of canvas -->
+				<fieldset id='CANVAS'>
+					<legend><b>Canvas</b></legend>
+					<label>image file<input type='file' id='inputImg' accept='image/*'></label>
+					<div id='canvasSizes'>
+						<label>width<input type='number' id='inputWidth' value=100 min=100 step=1 required></label>
+						<label>height<input type='number' id='inputHeight' value=100 min=100 step=1 required></label>
+					</div>
+					<div id='canvasDivisions'>
+						<label>X-divisions<input type='number' id='inputHorizontal' value=2 min=1 step=1 required></label>
+						<label>Y-divisions<input type='number' id='inputVertical' value=2 min=1 step=1 required></label>
+					</div>
+				</fieldset>
+				<!-- color and alpha value of focus area -->
+				<fieldset id='COLOR'>
+					<legend><b>Color</b></legend>
+					<div id='colorParameters'>
+						<label>color<input type='color' id='inputColor' value='#0000ff'></label>
+						<label>alpha<input type='range' id='inputAlpha' value=1.0 min=0.0 max=1.0 step=0.1 required></label>
+					</div>
+				</fieldset>
+				<!-- coordinates of the current focus area -->
+				<fieldset id='COORDINATES'>
+					<legend><b>Coordinates</b></legend>
+					<div id='divisionCoordinates'>
+						<label>X-index<input type='number' id='inputX' value=1 min=1 step=1 required></label>
+						<label>Y-index<input type='number' id='inputY' value=1 min=1 step=1 required></label>
+					</div>
+				</fieldset>
+			</form>
+			<button id='nextB'>Next</button>
+			<button id='leftB'>Left</button>
+			<button id='rightB'>Right</button>
+		</div>
+		<footer>
+			<p>Copyright (c) 2018 Yuji SODE</p>
+			<a href='https://github.com/YujiSODE/dataMappingGuide'>GitHub</a>
+		</footer>
+	<script type='text/javascript'>
+		(function(){
+			var slf=window,C=slf.document.getElementById('cvs_dataMappingGuide'),
+				obj={},reader=new FileReader(),
+				NextB=slf.document.getElementById('nextB'),
+				LeftB=slf.document.getElementById('leftB'),
+				RightB=slf.document.getElementById('rightB'),
+				/*form inputs: Canvas*/
+				img=slf.document.getElementById('inputImg'),
+				imgLength=0,
+				width=slf.document.getElementById('inputWidth'),
+				height=slf.document.getElementById('inputHeight'),
+				horizontal=slf.document.getElementById('inputHorizontal'),
+				vertical=slf.document.getElementById('inputVertical'),
+				/*form inputs: Color*/
+				color=slf.document.getElementById('inputColor'),
+				alpha=slf.document.getElementById('inputAlpha'),
+				/*form inputs: Coordinates*/
+				X=slf.document.getElementById('inputX'),
+				Y=slf.document.getElementById('inputY');
+			obj=dataMappingGuide(C);
+			//### initial values ###
+			obj.setDivisions(horizontal.value,vertical.value);
+			obj.setColor(color.value,alpha.value);
+			obj.resize(width.value,height.value);
+			obj.xy(X.value,Y.value);
+			//### file reader event ###
+			reader.addEventListener('load',function(){
+				obj.setDivisions(horizontal.value,vertical.value);
+				obj.setColor(color.value,alpha.value);
+				obj.resize(width.value,height.value,reader.result);
+				obj.xy(X.value,Y.value);
+			},false);
+			//### form change event ###
+			slf.document.getElementById('control').addEventListener('change',function(){
+				imgLength=img.files.length;
+				if(imgLength>0){
+					reader.readAsDataURL(img.files[0]);
+				}else{
+					obj.setDivisions(horizontal.value,vertical.value);
+					obj.setColor(color.value,alpha.value);
+					obj.resize(width.value,height.value);
+					obj.xy(X.value,Y.value);
+				}
+			},false);
+			//### button event ###
+			NextB.addEventListener('click',function(){
+				var xyNext=obj.next();
+				X.value=xyNext[0];
+				Y.value=xyNext[1];
+				obj.xy(xyNext[0],xyNext[1]);
+			},false);
+			LeftB.addEventListener('click',function(){
+				slf.document.getElementById('formDiv').className='divLeft';
+			},false);
+			RightB.addEventListener('click',function(){
+				slf.document.getElementById('formDiv').className='divRight';
+			},false);
+		}());
+	</script>
+	</body>
+</html>
+<!-- dataMappingGuide_web.html -->
+<!--/*
+*          MIT License
+*
+* Copyright (c) 2018 Yuji Sode
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+
+* The above copyright notice and this permission notice shall be included in all
+* copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+* SOFTWARE.
+*/-->
