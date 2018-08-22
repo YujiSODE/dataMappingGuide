@@ -1,0 +1,3 @@
+//=== capturingCanvas/capturingCanvas.js (Yuji SODE,2018): the MIT License; https://gist.github.com/YujiSODE/26819973169511a5ab3e0f64612d557b ===
+//It returns a function that captures canvas image and adds download link to this image
+function capturingCanvas(canvas,element){return function(){var A=window.document.createElement('a'),IMG=window.document.createElement('img'),imgurl=canvas.toDataURL(),d=new Date(),fileName=d.toString().replace(/ /g,'_').replace(/[()]/g,'')+'.png';element=!element?window.document.body:element;A.className='capturedCanvas';A.download=fileName;A.href=imgurl;IMG.src=imgurl;IMG.alt='captured canvas image of '+d.toString();A.appendChild(IMG);element.appendChild(A);A=IMG=imgurl=d=fileName=null;};}

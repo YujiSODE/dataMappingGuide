@@ -1,0 +1,20 @@
+/*landformPath_style.css*/
+canvas{
+    border:1px solid #000;
+    resize:both;
+    background:#fff;
+    overflow:scroll;
+}
+#formDiv{
+    border:1px solid #000;
+    width:40vw;
+    height:40vh;
+    overflow:scroll;
+}
+.capturedCanvas img{
+    border:1px solid #f00;
+    width:10vw;
+    height:10vw;
+    margin:1vw;
+    background:#fff;
+}
